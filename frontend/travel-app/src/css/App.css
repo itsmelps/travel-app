@@ -88,3 +88,9 @@ body {
   z-index: 1;
 }
 
+/* App.css */
+.leaflet-container {
+  height: 300px;
+  width: 100%;
+  border-radius: 10px;
+}
