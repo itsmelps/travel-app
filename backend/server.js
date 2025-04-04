@@ -4,6 +4,7 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const { Server } = require("socket.io");
 const http = require("http");
+dotenv.config(); // This loads the secret
 
 const connectDB = require("./config/db");
 const userRoutes = require("./routes/userRoutes");
@@ -22,6 +23,7 @@ app.get("/", (req, res) => {
   
 app.use("/api/users", userRoutes);
 app.use("/api/messages", messageRoutes);
+
 
 const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: "*" } });
