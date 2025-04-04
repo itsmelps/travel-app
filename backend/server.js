@@ -9,6 +9,7 @@ dotenv.config(); // This loads the secret
 const connectDB = require("./config/db");
 const userRoutes = require("./routes/userRoutes");
 const messageRoutes = require("./routes/messageRoutes");
+const communityRoutes = require("./routes/communityRoutes");
 
 dotenv.config();
 connectDB();
@@ -23,6 +24,9 @@ app.get("/", (req, res) => {
   
 app.use("/api/users", userRoutes);
 app.use("/api/messages", messageRoutes);
+console.log("Registering community routes...");
+app.use("/api/community", communityRoutes);
+
 
 
 const server = http.createServer(app);
