@@ -5,8 +5,8 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Layout from "./Components/Layout";
 import CommunityForm from "./pages/communityform";
-import "./css/App.css";
 import UserRegistration from "./pages/Userform";
+import "./css/App.css";
 
 const App = () => {
   return (
@@ -16,9 +16,9 @@ const App = () => {
       <Route path="/register" element={<Register />} />
       <Route path="/chat" element={<Layout />} />
       <Route path="/communityregister" element={<CommunityForm />} />
-       <Route path="/userregister" element={<UserRegistration />} />
+      <Route path="/userregister" element={<UserRegistration />} />
     </Routes>
   );
 };
 
-export default App;
+export default App; // ✅ Required

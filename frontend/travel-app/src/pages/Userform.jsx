@@ -1,7 +1,25 @@
 import React, { useState } from "react";
-import { Button, TextField, FormControl, InputLabel, Select, MenuItem, Checkbox, FormControlLabel, Typography, Container, Paper, Grid } from "@mui/material";
+import {
+  Button,
+  TextField,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Checkbox,
+  FormControlLabel,
+  Typography,
+  Container,
+  Paper,
+  Grid
+} from "@mui/material";
+
+import { useNavigate } from "react-router-dom";
+import axios from "axios"; // ✅ Make sure this is imported
 
 const UserRegistration = () => {
+  const navigate = useNavigate(); // ✅ Moved inside the component function
+
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -26,11 +44,31 @@ const UserRegistration = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
+  
+    console.log("Password:", formData.password);
+    console.log("Confirm Password:", formData.confirmPassword);
+  
+    if (formData.password !== formData.confirmPassword) {
+      alert("Passwords do not match");
+      return;
+    }
+  
+    try {
+      const response = await axios.post("http://localhost:5000/api/users/register", {
+        ...formData, // ✅ sends everything including confirmPassword
+      });
+  
+      console.log("Registration successful:", response.data);
+      alert("User registered successfully!");
+      navigate("/login");
+    } catch (error) {
+      console.error("Registration error:", error.response?.data || error.message);
+      alert("Error during registration");
+    }
   };
-
+  
   return (
     <Container maxWidth="sm" sx={{ mt: 5 }}>
       <Typography variant="h4" align="center" gutterBottom>
@@ -80,9 +118,6 @@ const UserRegistration = () => {
             <Grid item xs={6}>
               <TextField fullWidth label="City" name="city" value={formData.city} onChange={handleChange} required />
             </Grid>
-            {/* <Grid item xs={12}>
-              <FormControlLabel control={<Checkbox name="newsletter" checked={formData.newsletter} onChange={handleChange} />} label="Subscribe to Newsletter" />
-            </Grid> */}
             <Grid item xs={12}>
               <FormControlLabel control={<Checkbox name="termsAccepted" checked={formData.termsAccepted} onChange={handleChange} required />} label="I agree to Terms & Conditions" />
             </Grid>

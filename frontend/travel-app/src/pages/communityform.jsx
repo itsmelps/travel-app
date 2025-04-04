@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import {
   Box,
@@ -16,6 +17,7 @@ import {
   Paper,
 } from "@mui/material";
 import "leaflet/dist/leaflet.css";
+import { useNavigate } from "react-router-dom";
 
 const theme = createTheme({
   palette: {
@@ -38,6 +40,8 @@ function LocationPicker({ onLocationSelect }) {
 }
 
 function CommunityForm() {
+  const navigate = useNavigate(); // ✅ Ensure navigation works after submission
+
   const [formData, setFormData] = useState({
     heading: "",
     type: "",
@@ -47,6 +51,7 @@ function CommunityForm() {
     requirements: "",
     description: "",
     email: "",
+    password: "", // ✅ Added password field
     phone: "",
     location: "",
     website: "",
@@ -58,16 +63,51 @@ function CommunityForm() {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
-
   const handleLocationSelect = (location) => {
-    const latLng = `Lat: ${location.lat}, Lng: ${location.lng}`;
-    setFormData({ ...formData, location: latLng });
+    setFormData((prevData) => ({
+      ...prevData,
+      location: { lat: location.lat, lng: location.lng }, // ✅ Keep as an object
+    }));
   };
+  
+  
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form Data Submitted:", formData);
+  
+    if (!formData.email || !formData.password || !formData.name) {
+      alert("Please fill all required fields!");
+      return;
+    }
+  
+    if (formData.password.length < 6) {
+      alert("Password must be at least 6 characters long!");
+      return;
+    }
+  
+    const submissionData = {
+      ...formData,
+      location: formData.location ? `${formData.location.lat}, ${formData.location.lng}` : "", // ✅ Convert location to a string
+    };
+  
+    try {
+      console.log("Submitting formData:", submissionData);
+      const response = await axios.post("http://localhost:5000/api/community/register", submissionData);
+  
+      if (response.status === 201) {
+        alert("Registration successful! Redirecting to login...");
+        navigate("/login");
+      } else {
+        alert("Something went wrong. Please try again.");
+      }
+  
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      alert(error.response?.data?.message || "An error occurred while registering.");
+    }
   };
+  
+  
 
   return (
     <ThemeProvider theme={theme}>
@@ -123,6 +163,9 @@ function CommunityForm() {
 
               <TextField label="Email" name="email" type="email" value={formData.email} onChange={handleChange} fullWidth required sx={{ marginBottom: "16px" }} />
 
+              {/* ✅ Added Password Field */}
+              <TextField label="Password" name="password" type="password" value={formData.password} onChange={handleChange} fullWidth required sx={{ marginBottom: "16px" }} />
+
               <TextField label="Phone" name="phone" type="tel" value={formData.phone} onChange={handleChange} fullWidth required sx={{ marginBottom: "16px" }} />
 
               <FormControl fullWidth required sx={{ marginBottom: "16px" }}>
@@ -138,14 +181,21 @@ function CommunityForm() {
 
               <TextField label="Description" name="description" value={formData.description} onChange={handleChange} fullWidth multiline rows={2} required sx={{ marginBottom: "16px" }} />
 
-              {/* Map Section */}
               <Typography variant="h6" sx={{ marginBottom: "10px" }}>Select Location</Typography>
               <MapContainer center={[20, 78]} zoom={4} style={{ height: "300px", width: "100%", marginBottom: "16px", borderRadius: "10px" }}>
                 <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                 <LocationPicker onLocationSelect={handleLocationSelect} />
               </MapContainer>
 
-              <TextField label="Selected Location" name="location" value={formData.location} fullWidth disabled sx={{ marginBottom: "16px" }} />
+              <TextField
+  label="Selected Location"
+  name="location"
+  value={formData.location ? `Lat: ${formData.location.lat}, Lng: ${formData.location.lng}` : ""}
+  fullWidth
+  disabled
+  sx={{ marginBottom: "16px" }}
+/>
+
 
               <Button type="submit" variant="contained" fullWidth sx={{ backgroundColor: "primary.main", color: "#fff", '&:hover': { backgroundColor: "#bf9060" } }}>
                 Submit
