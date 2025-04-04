@@ -1,0 +1,110 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap");
+
+.payment-card {
+  max-width: 400px;
+  background: white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  font-family: "Poppins", sans-serif;
+}
+
+.price{
+    display: flex;
+    justify-content: space-between;
+}
+
+.pricing-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.old-price {
+  font-size: 1.5rem;
+  text-decoration: line-through;
+  color: #6b7280;
+}
+
+.new-price {
+  font-size: 1.5rem;
+  margin-left: 10px;
+  font-weight: bold;
+}
+
+.nights-info {
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.divider {
+  margin: 14px 0;
+  border-top: 1px solid #e5e7eb;
+}
+
+.date-selection {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  border: 1px solid #bdc3ce;
+  border-radius: 12px;
+  padding: 14px;
+  background: #ffffff;
+}
+
+.date-label {
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+.date-value {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.guest-selection {
+  border: 1px solid #bdc3ce;
+  border-radius: 12px;
+  padding: 12px;
+  margin-top: 10px;
+  background: #ffffff;
+}
+
+.guest-selection select {
+  width: 100%;
+  font-size: 1rem;
+  padding: 5px;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-family: "Poppins", sans-serif;
+}
+
+.reserve-button {
+  width: 100%;
+  /* background: linear-gradient(to right, #ecd348, #dc2626); */
+  background: rgb(9, 94, 47);
+  color: white;
+  padding: 12px;
+  border-radius: 12px;
+  font-size: 1rem;
+  cursor: pointer;
+  text-align: center;
+  margin-top: 14px;
+  font-weight: 600;
+  border: none;
+  outline: none;
+  font-family: "Poppins", sans-serif;
+}
+
+.reserve-button:hover {
+  background: linear-gradient(to right, #db2777, #b91c1c);
+}
+
+.payment-footer {
+  text-align: center;
+  color: #6b7280;
+  font-size: 0.85rem;
+  margin-top: 8px;
+}
